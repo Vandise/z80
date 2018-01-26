@@ -1,15 +1,31 @@
-C++ Base Project
+Z80 Emulator [![Build Status](https://travis-ci.org/Vandise/z80.svg?branch=master)](https://travis-ci.org/Vandise/z80)
 ---
-Creates a C++ base project. Handles environment variable setting, unit testing, and debugging via lldb.
+Yes, another Z80 emulator, but this isn't just any emulator; it's my emulator! What's it for you ask? My own personal interests in learning emulation. Maybe you'll learn something from it as well!
 
-### DirEnv
-Loads environment variables from .envrc in your shell.
+What's included or going to be included?
 
-#### Installation
-Please view the following on how to install DirEnv. [https://github.com/direnv/direnv](https://github.com/direnv/direnv).
+- Extensive documentation
+- Unit tests
+- Mistakes
 
-### Debugging
-Two small bash scripts are included that pertain to debugging: `set_breakpoints` and `debug`. `set_breakpoints` will parse all of your C++ files for `//-BREAKPOINT-` comments. This automatically configures a script for LLDB to set a breakpoint in your application. To run your program with all your breakpoints set, run the `debug` command.
+## Getting Started
+Currently are not any dependencies other then a C++ compiler.
 
-### Testing
-Included is the Catch test framework. All tests belong in the `test/` directory. Running `make tests` will generate your test suite. 
+To compile:
+
+```bash
+$ make
+```
+
+To run the test suite:
+
+```bash
+$ make tests
+$ ./bin/test_suite
+```
+
+## Contributing
+Send me a pull request. Be EXTREMELY thorough with the change, explain what it does, why it's doing things a certain way, and included unit tests.
+
+## License
+MIT
