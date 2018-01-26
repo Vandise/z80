@@ -9,7 +9,7 @@ What's included or going to be included?
 - Mistakes
 
 ## Getting Started
-Currently are not any dependencies other then a C++ compiler.
+Currently there are no dependencies other then a C++ compiler.
 
 To compile:
 
