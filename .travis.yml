@@ -1,0 +1,8 @@
+language: cpp
+sudo: required
+before_script:
+  - sudo apt-get update
+script:
+  - make
+  - make tests
+  - sudo ./bin/test_suite
