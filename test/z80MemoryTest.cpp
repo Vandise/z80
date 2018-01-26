@@ -15,7 +15,7 @@ SCENARIO("Memory is initialized", "[z80_memory]")
     {
       for (int i = 0; i < Z80_MEMORY_SIZE; i++)
       {
-        REQUIRE( m.getAddress(i) == 0 );
+        REQUIRE( m.readByte(i) == 0 );
       }
     }
 
@@ -28,8 +28,8 @@ SCENARIO("Memory is initialized", "[z80_memory]")
     {
       THEN("The address is updated")
       {
-        m.setAddress(address, addressValue);
-        REQUIRE( m.getAddress(address) == addressValue );
+        m.setByte(address, addressValue);
+        REQUIRE( m.readByte(address) == addressValue );
       }
     }
 
@@ -39,8 +39,8 @@ SCENARIO("Memory is initialized", "[z80_memory]")
       THEN("The address contents are returned")
       {
         const uint8_t value = 0xFF;
-        m.setAddress(address, value);
-        REQUIRE( m.getAddress(address) == value );
+        m.setByte(address, value);
+        REQUIRE( m.readByte(address) == value );
       }
 
     }
@@ -51,8 +51,8 @@ SCENARIO("Memory is initialized", "[z80_memory]")
       THEN("The unsigned address overflows")
       {
         int overflowAddress = Z80_MEMORY_SIZE + 1; // overflows to 0
-        m.setAddress(overflowAddress, addressValue);
-        REQUIRE( m.getAddress(0) == addressValue );
+        m.setByte(overflowAddress, addressValue);
+        REQUIRE( m.readByte(0) == addressValue );
       }
 
     }
@@ -65,7 +65,7 @@ SCENARIO("Memory is initialized", "[z80_memory]")
       {
         int address = 65536;
         const char* e = std::string("Invalid address ").append(std::to_string(address)).append(" given.").c_str();
-        REQUIRE_THROWS_WITH( m.getAddress(address), e);
+        REQUIRE_THROWS_WITH( m.readByte(address), e);
       }
     }
     */

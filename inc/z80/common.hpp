@@ -8,6 +8,9 @@
 #define REG_SP "sp"
 #define REG_PC "pc"
 
+// Max cartridge size (32k)
+#define MAX_CARTRIDGE_SIZE 0x8000
+
 // Max addressable memory is 65k
 #define Z80_MEMORY_SIZE 0xFFFF
 

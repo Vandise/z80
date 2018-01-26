@@ -14,8 +14,8 @@ namespace Z80
 
     public:
       Memory();
-      void setAddress(const unsigned short int address, const uint8_t value);
-      uint8_t getAddress(const unsigned short int address);
+      void setByte(const unsigned short int address, const uint8_t value);
+      uint8_t readByte(const unsigned short int address);
   };
 }
 

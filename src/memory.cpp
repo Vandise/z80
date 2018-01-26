@@ -9,14 +9,14 @@ Z80::Memory::Memory()
 }
 
 void
-Z80::Memory::setAddress(const unsigned short int address, const uint8_t value)
+Z80::Memory::setByte(const unsigned short int address, const uint8_t value)
 {
   //TODO: do I allow int overflow or not?
   this->memory[address] = value;
 }
 
 uint8_t
-Z80::Memory::getAddress(const unsigned short int address)
+Z80::Memory::readByte(const unsigned short int address)
 {
   //TODO: do I allow int overflow or not?
   /*
