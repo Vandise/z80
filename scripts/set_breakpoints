@@ -1,0 +1,28 @@
+#!/bin/bash 
+
+#lldb -S util/lldb/breakpoints
+
+SRCDIR="src/"
+SRCEXT="cpp"
+SOURCES=$(find $SRCDIR -type f -name *.$SRCEXT)
+LLDBSCRIPT="$(pwd)/.tmp/breakpoints"
+
+rm $LLDBSCRIPT
+touch $LLDBSCRIPT
+
+#echo "file bin/lexer" >> $LLDBSCRIPT
+
+re='^[0-9]+$'
+
+for source in $SOURCES
+do
+  filename=$(realpath $source)
+  echo $filename
+  linenos=$(grep -n '\/\/-BREAKPOINT-' $source | cut -d: -f 1)
+  for l in $linenos; do
+    if [[ $l =~ $re ]] ; then
+      echo -e "\t Breakpoint found at: $filename :: $l"
+      echo "breakpoint set -f $filename -l $l" >> $LLDBSCRIPT
+    fi
+  done
+done

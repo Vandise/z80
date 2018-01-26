@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [[ $# -eq 0 ]] ; then
+    echo 'You must pass in the executable you want to run LLDB on'
+    exit 1
+fi
+
+LLDBSCRIPT="$(pwd)/.tmp/breakpoints"
+
+echo "file $1" >> $LLDBSCRIPT
+
+lldb -S $LLDBSCRIPT
