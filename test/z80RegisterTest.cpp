@@ -60,4 +60,46 @@ SCENARIO("Register is initialized", "[z80_register]")
 
   }
 
+  GIVEN("The register is updated")
+  {
+
+    uint16_t value = 0xAABB;
+    Z80::Register r = Z80::Register(value);
+
+    WHEN("It's lower byte")
+    {
+      THEN("The lower 8 bits are set")
+      {
+        uint8_t upper = r.getUpper();
+        uint8_t lower = 0xFF;
+        r.setLower(lower);
+        REQUIRE( r.getLower() == lower );
+        REQUIRE( r.getUpper() == upper );
+      }
+    }
+
+    WHEN("It's upper byte")
+    {
+      THEN("The upper 8 bits are set")
+      {
+        uint8_t lower = r.getLower();
+        uint8_t upper = 0xFF;
+        r.setUpper(upper);
+        REQUIRE( r.getLower() == lower );
+        REQUIRE( r.getUpper() == upper );
+      }
+    }
+
+    WHEN("It's the entire register")
+    {
+      THEN("All 16 bits are set")
+      {
+        uint16_t value = 0x1234;
+        r.setValue(value);
+        REQUIRE( r.getValue() == value );
+      }
+    }
+
+  }
+
 }

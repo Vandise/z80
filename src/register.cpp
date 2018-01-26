@@ -5,6 +5,25 @@ Z80::Register::Register(const uint16_t value)
   this->value = value;
 }
 
+
+void
+Z80::Register::setLower(const uint8_t value)
+{
+  this->value = (this->value & 0xFF00) | value;
+}
+
+void
+Z80::Register::setUpper(const uint8_t value)
+{
+  this->value = (this->value & 0x00FF) | ( value << 8 );
+}
+
+void
+Z80::Register::setValue(const uint16_t value)
+{
+  this->value = value;
+}
+
 uint8_t
 Z80::Register::getLower()
 {
