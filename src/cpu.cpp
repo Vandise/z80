@@ -2,6 +2,7 @@
 
 Z80::CPU::CPU()
 {
+  this->clock = Z80::Clock();
   this->registers = {
     { REG_AF, Z80::Register(REG_AF_DEFAULT_VALUE) },
     { REG_BC, Z80::Register(REG_BC_DEFAULT_VALUE) },
@@ -10,6 +11,12 @@ Z80::CPU::CPU()
     { REG_SP, Z80::Register(REG_SP_DEFAULT_VALUE) },
     { REG_PC, Z80::Register(REG_PC_DEFAULT_VALUE) }
   };
+}
+
+Z80::Clock*
+Z80::CPU::getClock()
+{
+  return &(this->clock);
 }
 
 Z80::Register*

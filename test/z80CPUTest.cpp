@@ -43,4 +43,12 @@ SCENARIO("The CPU is initialized", "[z80_cpu]")
     }
   }
 
+  GIVEN("Clock information needs to be updated")
+  {
+    THEN("Clock data can be accessed")
+    {
+      REQUIRE( cpu.getClock()->getClockCycles() == 0 );
+    }
+  }
+
 }
