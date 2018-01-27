@@ -32,6 +32,8 @@
 
 // Echo of internal RAM (apparently)
 // If this isn't used for anything else, it's probably not needed
+// echo range: C000 - DDFF
+// offset is 0x2000 (8k higher)
 #define ECHO_INTERNAL_RAM_START_ADDRESS 0xE000
 #define ECHO_INTERNAL_RAM_END_ADDRESS   0xFDFF
 
