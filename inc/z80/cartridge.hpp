@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <iostream>
 #include "z80/common.hpp"
 
 // Cartridge types
@@ -38,6 +39,7 @@ namespace Z80
       int getRamSize();
       int getCartridgeType();
       bool isValid();
+      uint8_t* getCartridgeContents();
 
   };
 }

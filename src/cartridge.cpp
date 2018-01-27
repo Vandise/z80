@@ -1,5 +1,4 @@
 #include "z80/cartridge.hpp"
-#include <iostream>
 
 Z80::Cartridge::Cartridge(std::string fileName)
 {
@@ -29,6 +28,12 @@ Z80::Cartridge::initialize()
     oss << this->buffer[i];
   }
   this->title.append(oss.str());
+}
+
+uint8_t*
+Z80::Cartridge::getCartridgeContents()
+{
+  return this->buffer;
 }
 
 bool

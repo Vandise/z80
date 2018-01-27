@@ -8,6 +8,9 @@
 #define REG_SP "sp"
 #define REG_PC "pc"
 
+// start address to write the cartridge to in memory
+#define CARTRIDGE_START_ADDRESS 0x0000
+
 // Max cartridge size (32k)
 #define MAX_CARTRIDGE_SIZE 0x8000
 
