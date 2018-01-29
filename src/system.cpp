@@ -1,12 +1,5 @@
 #include "z80/system.hpp"
 
-Z80::System::System()
-{
-  this->cpu = Z80::CPU();
-  this->mmu = Z80::MMU();
-  this->cartridge = nullptr;
-}
-
 void
 Z80::System::loadCartridge(Z80::Cartridge *cartridge)
 {
@@ -29,4 +22,26 @@ Z80::System::dumpMemory()
     memory[i] = this->mmu.readByte(i);
   }
   std::cout << hexdump(memory) << std::endl;
+}
+
+bool
+Z80::System::isTerminated()
+{
+  return this->terminated;
+}
+
+bool
+Z80::System::isBooted()
+{
+  return this->booted;
+}
+
+void
+Z80::System::boot()
+{
+  this->terminated = false;
+  // todo: load the bios into memory
+  //       and play the Nintendo screen
+
+  this->booted = true;
 }

@@ -1,8 +1,9 @@
 #include "z80/cpu.hpp"
 
-Z80::CPU::CPU()
+Z80::CPU::CPU(Z80::MMU *mmu)
 {
   this->clock = Z80::Clock();
+  this->mmu = mmu;
   this->registers = {
     { REG_AF, Z80::Register(REG_AF_DEFAULT_VALUE) },
     { REG_BC, Z80::Register(REG_BC_DEFAULT_VALUE) },

@@ -1,6 +1,8 @@
 #ifndef __Z80_COMMON
 #define __Z80_COMMON 1
 
+#define DEBUG_SYSTEM true
+
 #define REG_AF "af"
 #define REG_BC "bc"
 #define REG_DE "de"
@@ -10,6 +12,9 @@
 
 // start address to write the cartridge to in memory
 #define CARTRIDGE_START_ADDRESS 0x0000
+
+// where our the game starts
+#define CARTRIDGE_GAME_START_ADDRESS 0x0100
 
 // Max cartridge size (32k)
 #define MAX_CARTRIDGE_SIZE 0x8000

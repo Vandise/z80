@@ -3,7 +3,17 @@
 
 SCENARIO("A Z80 system is initialized", "[z80_system]")
 {
-  // TODO:
-  //  not sure how I'm going to have all my objects bound together
-  //  various strategies, etc.
+  Z80::System system = Z80::System();
+
+  GIVEN("A system hasn't been booted yet")
+  {
+    THEN("It's status is terminated")
+    {
+      REQUIRE(system.isTerminated() == true);
+    }
+    THEN("It hasn't been booted")
+    {
+      REQUIRE(system.isBooted() == false);
+    }
+  }
 }

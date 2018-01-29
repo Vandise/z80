@@ -5,6 +5,7 @@
 #include <string>
 #include "z80/register.hpp"
 #include "z80/clock.hpp"
+#include "z80/mmu.hpp"
 #include "z80/common.hpp"
 
 #define REG_PC_DEFAULT_VALUE 0x0100
@@ -21,10 +22,11 @@ namespace Z80
 
     private:
       Z80::Clock clock;
+      Z80::MMU *mmu;
       std::map<std::string, Z80::Register> registers;
 
     public:
-      CPU();
+      CPU(Z80::MMU *mmu);
       Z80::Clock* getClock();
       Z80::Register* getRegister(const std::string identifier);
 

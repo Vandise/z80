@@ -4,7 +4,8 @@
 SCENARIO("The CPU is initialized", "[z80_cpu]")
 {
 
-  Z80::CPU cpu = Z80::CPU();
+  Z80::MMU mmu = Z80::MMU();
+  Z80::CPU cpu = Z80::CPU(&mmu);
 
   GIVEN("A CPU is initialized")
   {
