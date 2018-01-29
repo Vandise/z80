@@ -81,6 +81,23 @@ SCENARIO("The CPU is initialized", "[z80_cpu]")
       }
     }
 
+    WHEN("It's jp_a16")
+    {
+      mmu.setByte(CARTRIDGE_GAME_START_ADDRESS,     0xC3);
+      mmu.setByte(CARTRIDGE_GAME_START_ADDRESS + 1, 0x50);
+      mmu.setByte(CARTRIDGE_GAME_START_ADDRESS + 2, 0x01);
+      cpu.cycle();
+
+      THEN("It takes 16 machine cycles")
+      {
+        REQUIRE( cpu.getClock()->getMachineCycles() == 16 );
+      }
+      THEN("It updates the PC to the specified address")
+      {
+        REQUIRE( cpu.getRegister(REG_PC)->getValue() == 0x0150 );
+      }
+    }
+
   }
 
 }

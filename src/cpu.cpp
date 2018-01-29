@@ -14,6 +14,7 @@ Z80::CPU::CPU(Z80::MMU *mmu)
   };
 
   this->instructions[0x00] = &Z80::CPU::nop;
+  this->instructions[0xC3] = &Z80::CPU::jp_a16;
 
 }
 
