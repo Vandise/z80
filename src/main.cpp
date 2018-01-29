@@ -39,6 +39,14 @@ main( const int argc, const char **argv )
     system.boot();
     // load the cartridge
     system.loadCartridge(&c);
+
+    // game loop
+    while(!system.isTerminated())
+    {
+      // todo
+      system.run();
+    }
+
   }
   else
   {

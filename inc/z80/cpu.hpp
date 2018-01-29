@@ -19,16 +19,19 @@ namespace Z80
 {
   class CPU
   {
+    typedef void(Z80::CPU::*instructionHandle)();
 
     private:
       Z80::Clock clock;
       Z80::MMU *mmu;
       std::map<std::string, Z80::Register> registers;
+      std::map<uint8_t, instructionHandle> instructions;
 
     public:
       CPU(Z80::MMU *mmu);
       Z80::Clock* getClock();
       Z80::Register* getRegister(const std::string identifier);
+      void cycle();
 
   };
 }

@@ -25,3 +25,21 @@ Z80::CPU::getRegister(const std::string identifier)
 {
   return &(this->registers[identifier]);
 }
+
+void
+Z80::CPU::cycle()
+{
+  uint8_t instruction = this->mmu->readByte(
+    (this->registers[REG_PC]).getValue()
+  );
+
+  if ( this->instructions.count(instruction) )
+  {
+    // execute the instruction if implemented
+    (this->*(this->instructions[instruction]))();
+  }
+  else
+  {
+    throw std::string("Unimplemented instruction: ").append(std::to_string(instruction)).c_str();
+  }
+}

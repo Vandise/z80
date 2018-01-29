@@ -53,3 +53,18 @@ Z80::System::getCPU()
 {
   return &(this->cpu);
 }
+
+void
+Z80::System::run()
+{
+  try
+  {
+    this->cpu.cycle();
+  }
+  catch (char const* e)
+  {
+    std::cout << "System Error: " << e << std::endl;
+    this->terminated = true;
+    this->booted = false;
+  }
+}
