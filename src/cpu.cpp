@@ -14,16 +14,39 @@ Z80::CPU::CPU(Z80::MMU *mmu)
   };
 
   this->instructions[0x00] = &Z80::CPU::nop;
+  this->instructions[0xAF] = &Z80::CPU::xor_a;
   this->instructions[0xC3] = &Z80::CPU::jp_a16;
 
 }
 
 void
+Z80::CPU::clearFlags(uint8_t f)
+{
+  uint8_t v = REGISTER(REG_AF).getLower();
+  v &= ~(f);
+  REGISTER(REG_AF).setLower(v);
+}
+
+void
+Z80::CPU::setFlags(uint8_t f)
+{
+  uint8_t v = REGISTER(REG_AF).getLower();
+  v |= f;
+  REGISTER(REG_AF).setLower(v);
+}
+
+bool
+Z80::CPU::flagIsset(uint8_t f)
+{
+  return REGISTER(REG_AF).getLower() & f;
+}
+
+void
 Z80::CPU::incrementPC(unsigned short int amount)
 {
-  uint16_t value = (this->registers[REG_PC]).getValue();
+  uint16_t value = REGISTER(REG_PC).getValue();
   value += amount;
-  (this->registers[REG_PC]).setValue(value);
+  REGISTER(REG_PC).setValue(value);
 }
 
 Z80::Clock*
@@ -42,7 +65,7 @@ void
 Z80::CPU::cycle()
 {
   uint8_t instruction = this->mmu->readByte(
-    (this->registers[REG_PC]).getValue()
+    REGISTER(REG_PC).getValue()
   );
 
   if ( this->instructions.count(instruction) )

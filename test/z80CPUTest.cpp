@@ -52,6 +52,56 @@ SCENARIO("The CPU is initialized", "[z80_cpu]")
     }
   }
 
+  GIVEN("Flags need to be altered")
+  {
+    // ZERO_FLAG | CARRY_FLAG | NEGATIVE_FLAG | HALFCARRY_FLAG
+    cpu.getRegister(REG_AF)->setLower(0x00); // clear flags
+    WHEN("A flag is set")
+    {
+      THEN("it is registered as set")
+      {
+        cpu.setFlags(ZERO_FLAG);
+        REQUIRE( cpu.flagIsset(ZERO_FLAG) );
+      }
+    }
+
+    WHEN("A flag is not set")
+    {
+      THEN("it is registered as not set")
+      {
+        REQUIRE( cpu.flagIsset(ZERO_FLAG) == false );
+      }
+    }
+
+    GIVEN("Flags need to be cleared")
+    {
+      cpu.setFlags(ZERO_FLAG | CARRY_FLAG | NEGATIVE_FLAG | HALFCARRY_FLAG);
+      WHEN("Only one flag is being cleared")
+      {
+        THEN("The other flags remain unaltered")
+        {
+          cpu.clearFlags(ZERO_FLAG);
+          REQUIRE( cpu.flagIsset(ZERO_FLAG) == false );
+          REQUIRE( cpu.flagIsset(CARRY_FLAG) == true );
+          REQUIRE( cpu.flagIsset(NEGATIVE_FLAG) == true );
+          REQUIRE( cpu.flagIsset(HALFCARRY_FLAG) == true );
+        }
+      }
+
+      WHEN("Multiple flags are being cleared")
+      {
+        THEN("All specified flags are cleared")
+        {
+          cpu.clearFlags(CARRY_FLAG | NEGATIVE_FLAG | HALFCARRY_FLAG);
+          REQUIRE( cpu.flagIsset(ZERO_FLAG) == true );
+          REQUIRE( cpu.flagIsset(CARRY_FLAG) == false );
+          REQUIRE( cpu.flagIsset(NEGATIVE_FLAG) == false );
+          REQUIRE( cpu.flagIsset(HALFCARRY_FLAG) == false );
+        }
+      }
+    }
+  }
+
   GIVEN("An instruction needs to be executed")
   {
 
@@ -96,6 +146,29 @@ SCENARIO("The CPU is initialized", "[z80_cpu]")
       {
         REQUIRE( cpu.getRegister(REG_PC)->getValue() == 0x0150 );
       }
+    }
+
+    WHEN("It's xor_a")
+    {
+      uint8_t regValue = 0x11;
+      mmu.setByte(CARTRIDGE_GAME_START_ADDRESS, 0xAF);
+      cpu.getRegister(REG_AF)->setValue(regValue);
+      cpu.cycle();
+
+      THEN("The register xor's itself")
+      {
+        uint8_t v = cpu.getRegister(REG_AF)->getUpper();
+        REQUIRE( v == (regValue ^ regValue) );
+      }
+
+      THEN("All flags but ZERO are cleared")
+      {
+        REQUIRE( cpu.flagIsset(ZERO_FLAG) );
+        REQUIRE( cpu.flagIsset(CARRY_FLAG) == false );
+        REQUIRE( cpu.flagIsset(NEGATIVE_FLAG) == false );
+        REQUIRE( cpu.flagIsset(HALFCARRY_FLAG) == false );
+      }
+
     }
 
   }

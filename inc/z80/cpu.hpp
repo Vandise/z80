@@ -17,6 +17,13 @@
 #define REG_BC_DEFAULT_VALUE 0x0013
 #define REG_HL_DEFAULT_VALUE 0x014D
 
+#define REGISTER(r) (this->registers[r])
+
+#define ZERO_FLAG (1 << 7)
+#define NEGATIVE_FLAG (1 << 6)
+#define HALFCARRY_FLAG (1 << 5)
+#define CARRY_FLAG (1 << 4)
+
 namespace Z80
 {
   class CPU
@@ -36,13 +43,17 @@ namespace Z80
       Z80::Clock* getClock();
       Z80::Register* getRegister(const std::string identifier);
       void cycle();
+      void clearFlags(uint8_t f);
+      void setFlags(uint8_t f);
+      bool flagIsset(uint8_t f);
 
     //
     // INSTRUCTIONS
     //
     private:
       void nop();     // 0x00
-      void jp_a16();  // 0xc3
+      void xor_a();   // 0xAF
+      void jp_a16();  // 0xC3
 
   };
 }
