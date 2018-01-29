@@ -43,5 +43,13 @@ Z80::System::boot()
   // todo: load the bios into memory
   //       and play the Nintendo screen
 
+  // set program counter to the start address of the game data (0x0100)
+  this->cpu.getRegister(REG_PC)->setValue(CARTRIDGE_GAME_START_ADDRESS);
   this->booted = true;
+}
+
+Z80::CPU*
+Z80::System::getCPU()
+{
+  return &(this->cpu);
 }

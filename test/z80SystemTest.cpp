@@ -16,4 +16,13 @@ SCENARIO("A Z80 system is initialized", "[z80_system]")
       REQUIRE(system.isBooted() == false);
     }
   }
+
+  GIVEN("The system has been booted")
+  {
+    THEN("The PC register points to the start of the game data")
+    {
+      system.boot();
+      REQUIRE( system.getCPU()->getRegister(REG_PC)->getValue() == CARTRIDGE_GAME_START_ADDRESS );
+    }
+  }
 }

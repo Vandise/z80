@@ -27,6 +27,7 @@ namespace Z80
       bool isTerminated();
       bool isBooted();
       void boot();
+      Z80::CPU* getCPU();
   };
 }
 
