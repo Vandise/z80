@@ -4,9 +4,6 @@ Z80::System::System()
 {
   this->cpu = Z80::CPU();
   this->mmu = Z80::MMU();
-  this->memory = Z80::Memory();
-
-  this->mmu.setStrategy( &(this->memory) );
   this->cartridge = nullptr;
 }
 
@@ -29,7 +26,7 @@ Z80::System::dumpMemory()
   uint8_t memory[Z80_MEMORY_SIZE];
   for (int i = 0; i <= Z80_MEMORY_SIZE; i++)
   {
-    memory[i] = this->memory.readByte(i);
+    memory[i] = this->mmu.readByte(i);
   }
   std::cout << hexdump(memory) << std::endl;
 }

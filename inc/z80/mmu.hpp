@@ -10,12 +10,11 @@ namespace Z80
   class MMU
   {
     private:
-      Z80::Memory *strategy;
+      Z80::Memory memory;
 
     public:
-      MMU() = default;
+      MMU();
       ~MMU();
-      void setStrategy(Z80::Memory *strategy);
       void setByte(const unsigned short int address, const uint8_t value);
       uint8_t readByte(const unsigned short int address);
       uint16_t readWord(const unsigned short int address);

@@ -4,9 +4,7 @@
 SCENARIO("Initializing the memory management unit", "[z80_mmu]")
 {
 
-  Z80::Memory m = Z80::Memory();
   Z80::MMU mmu = Z80::MMU();
-  mmu.setStrategy( &m );
 
   GIVEN("An address needs to be written to")
   {
@@ -18,7 +16,7 @@ SCENARIO("Initializing the memory management unit", "[z80_mmu]")
         short int address = 0x5FFF;
         uint8_t v = 0x11;
         mmu.setByte(address, v);
-        REQUIRE( m.readByte(address) == v );
+        REQUIRE( mmu.readByte(address) == v );
       }
     }
 
@@ -30,8 +28,8 @@ SCENARIO("Initializing the memory management unit", "[z80_mmu]")
         uint8_t v = 0x22;
         mmu.setByte(address, v);
 
-        REQUIRE( m.readByte(address) == v );
-        REQUIRE( m.readByte(address + 0x2000) == v );
+        REQUIRE( mmu.readByte(address) == v );
+        REQUIRE( mmu.readByte(address + 0x2000) == v );
       }
     }
 

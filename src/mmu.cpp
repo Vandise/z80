@@ -1,14 +1,13 @@
 #include "z80/mmu.hpp"
 
-Z80::MMU::~MMU()
+Z80::MMU::MMU()
 {
-  this->strategy = nullptr;
+  this->memory = Z80::Memory();
 }
 
-void
-Z80::MMU::setStrategy(Z80::Memory *strategy)
+Z80::MMU::~MMU()
 {
-  this->strategy = strategy;
+  // todo
 }
 
 void
@@ -18,15 +17,15 @@ Z80::MMU::setByte(const unsigned short int address, const uint8_t value)
   // to an 8k higher region
   if ( address >= 0xC000 && address <= 0xDDFF )
   {
-    this->strategy->setByte( (address + 0x2000), value );
+    this->memory.setByte( (address + 0x2000), value );
   }
-  this->strategy->setByte( address, value );
+  this->memory.setByte( address, value );
 }
 
 uint8_t
 Z80::MMU::readByte(const unsigned short int address)
 {
-  return this->strategy->readByte(address);
+  return this->memory.readByte(address);
 }
 
 uint16_t

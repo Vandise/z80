@@ -16,7 +16,6 @@ namespace Z80
     private:
       Z80::CPU cpu;
       Z80::MMU mmu;
-      Z80::Memory memory;
       Z80::Cartridge *cartridge;
 
     public:
