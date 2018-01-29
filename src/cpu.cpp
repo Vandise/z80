@@ -12,6 +12,17 @@ Z80::CPU::CPU(Z80::MMU *mmu)
     { REG_SP, Z80::Register(REG_SP_DEFAULT_VALUE) },
     { REG_PC, Z80::Register(REG_PC_DEFAULT_VALUE) }
   };
+
+  this->instructions[0x00] = &Z80::CPU::nop;
+
+}
+
+void
+Z80::CPU::incrementPC(unsigned short int amount)
+{
+  uint16_t value = (this->registers[REG_PC]).getValue();
+  value += amount;
+  (this->registers[REG_PC]).setValue(value);
 }
 
 Z80::Clock*
@@ -40,6 +51,10 @@ Z80::CPU::cycle()
   }
   else
   {
+    if (DEBUG_SYSTEM)
+    {
+      std::cout << hexdump(instruction);
+    }
     throw std::string("Unimplemented instruction: ").append(std::to_string(instruction)).c_str();
   }
 }

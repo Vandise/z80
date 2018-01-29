@@ -54,16 +54,33 @@ SCENARIO("The CPU is initialized", "[z80_cpu]")
 
   GIVEN("An instruction needs to be executed")
   {
+
+    cpu.getRegister(REG_PC)->setValue(CARTRIDGE_GAME_START_ADDRESS);
+
     WHEN("It's an invalid instruction")
     {
       THEN("It throws an exception")
       {
         //0xF4 does not exist in this version of the z80
         mmu.setByte( CARTRIDGE_GAME_START_ADDRESS, 0xF4 );
-        cpu.getRegister(REG_PC)->setValue(CARTRIDGE_GAME_START_ADDRESS);
         REQUIRE_THROWS( cpu.cycle() );
       }
     }
+
+    WHEN("It's NOP")
+    {
+      mmu.setByte( CARTRIDGE_GAME_START_ADDRESS, 0x00 );
+      cpu.cycle();
+      THEN("It takes 4 machine cycles")
+      {
+        REQUIRE( cpu.getClock()->getMachineCycles() == 4 );
+      }
+      THEN("It increments the PC by one")
+      {
+        REQUIRE( cpu.getRegister(REG_PC)->getValue() == 0x101 );
+      }
+    }
+
   }
 
 }

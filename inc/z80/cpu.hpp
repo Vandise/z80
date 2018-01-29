@@ -3,6 +3,8 @@
 
 #include <map>
 #include <string>
+#include <iostream>
+#include "util/hexdump.hpp"
 #include "z80/register.hpp"
 #include "z80/clock.hpp"
 #include "z80/mmu.hpp"
@@ -27,11 +29,19 @@ namespace Z80
       std::map<std::string, Z80::Register> registers;
       std::map<uint8_t, instructionHandle> instructions;
 
+      void incrementPC(unsigned short int amount);
+
     public:
       CPU(Z80::MMU *mmu);
       Z80::Clock* getClock();
       Z80::Register* getRegister(const std::string identifier);
       void cycle();
+
+    //
+    // INSTRUCTIONS
+    //
+    private:
+      void nop();
 
   };
 }
