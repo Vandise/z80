@@ -31,6 +31,5 @@ Z80::MMU::readByte(const unsigned short int address)
 uint16_t
 Z80::MMU::readWord(const unsigned short int address)
 {
-  // TODO: s->getb + sgetb << 8
-  return 0;
+  return this->readByte(address) | this->readByte(address + 1) << 8;
 }

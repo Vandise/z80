@@ -41,7 +41,8 @@ namespace Z80
     // INSTRUCTIONS
     //
     private:
-      void nop();
+      void nop();     // 0x00
+      void jp_a16();  // 0xc3
 
   };
 }

@@ -35,4 +35,16 @@ SCENARIO("Initializing the memory management unit", "[z80_mmu]")
 
   }
 
+  GIVEN("Memory needs to be read")
+  {
+    WHEN("It's a word")
+    {
+      THEN("16 bits are returned")
+      {
+        mmu.setByte(0x00, 0x50);
+        mmu.setByte(0x01, 0x01);
+        REQUIRE( mmu.readWord(0x00) == 0x0150 );
+      }
+    }
+  }
 }
