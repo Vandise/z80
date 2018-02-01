@@ -46,6 +46,7 @@ namespace Z80
       void clearFlags(uint8_t f);
       void setFlags(uint8_t f);
       bool flagIsset(uint8_t f);
+      bool interrupted();
 
     //
     // INSTRUCTIONS

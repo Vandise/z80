@@ -52,6 +52,30 @@ SCENARIO("The CPU is initialized", "[z80_cpu]")
     }
   }
 
+  GIVEN("An interrupt has been pushed to memory")
+  {
+    WHEN("The interrupt flag isn't enabled")
+    {
+      THEN("The CPU was not interrupted")
+      {
+        // set LCD stat flag
+        mmu.setByte(INTERRUPT_FLAGS_REGISTER, (0x1 << 1) );
+        REQUIRE( cpu.interrupted() == false );
+      }
+    }
+    WHEN("The interrupt flag is enabled")
+    {
+      THEN("The CPU returns that it had been interrupted")
+      {
+        // enable LCD stat flag
+        mmu.setByte(INTERRUPT_ENABLE_REGISTER, (0x1 << 1) );
+        // set LCD stat flag
+        mmu.setByte(INTERRUPT_FLAGS_REGISTER, (0x1 << 1) );
+        REQUIRE( cpu.interrupted() == true );
+      }
+    }
+  }
+
   GIVEN("Flags need to be altered")
   {
     // ZERO_FLAG | CARRY_FLAG | NEGATIVE_FLAG | HALFCARRY_FLAG

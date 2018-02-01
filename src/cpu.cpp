@@ -49,6 +49,13 @@ Z80::CPU::incrementPC(unsigned short int amount)
   REGISTER(REG_PC).setValue(value);
 }
 
+bool
+Z80::CPU::interrupted()
+{
+  // return if any interrupt bits have been triggered
+  return this->mmu->readByte(INTERRUPT_FLAGS_REGISTER) & this->mmu->readByte(INTERRUPT_ENABLE_REGISTER);
+}
+
 Z80::Clock*
 Z80::CPU::getClock()
 {

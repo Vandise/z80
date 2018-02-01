@@ -61,6 +61,17 @@
 #define SYSTEM_RAM_START_ADDRESS 0xFF80
 #define SYSTEM_RAM_END_ADDRESS   0xFFFE
 
+/*
+  lower 0: VBlank
+        1: LCD stat off
+        2: Timer off
+        3: Serial off
+        4: Joypad off
+*/
+#define VBLANK_INTERRUPT_HANDLER_ADDRESS 0x0040
+
+// when bits are set, an interrupt has happened
+#define INTERRUPT_FLAGS_REGISTER  0xFF0F
 // interrupt register
 #define INTERRUPT_ENABLE_REGISTER 0xFFFF
 
