@@ -24,5 +24,6 @@ Z80::CPU::ld_nn_n()
       throw std::string("Invalid register for ld_nn_n: ").append(std::to_string(n_reg)).c_str();
   }
 
+  this->clock.incrementMachineCycles(3);
   this->incrementPC(1);
 }

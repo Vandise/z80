@@ -20,7 +20,7 @@
 #define REGISTER(r) (this->registers[r])
 
 #define ZERO_FLAG (1 << 7)
-#define NEGATIVE_FLAG (1 << 6)
+#define SUBTRACT_FLAG (1 << 6)
 #define HALFCARRY_FLAG (1 << 5)
 #define CARRY_FLAG (1 << 4)
 
@@ -57,6 +57,8 @@ namespace Z80
       void jp_a16();  // 0xC3
       void ld_n_nn(); // 0x01, 0x11, 0x21, 0x31,
       void ld_nn_n(); // 0x06, 0x0E, 0x16, 0x1E, 0x26, 0x2E
+      void ld_hld_a(); // 0x32
+      void dec_n();    // 0x05
 
   };
 }

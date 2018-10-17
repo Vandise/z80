@@ -78,7 +78,7 @@ SCENARIO("The CPU is initialized", "[z80_cpu]")
 
   GIVEN("Flags need to be altered")
   {
-    // ZERO_FLAG | CARRY_FLAG | NEGATIVE_FLAG | HALFCARRY_FLAG
+    // ZERO_FLAG | CARRY_FLAG | SUBTRACT_FLAG | HALFCARRY_FLAG
     cpu.getRegister(REG_AF)->setLower(0x00); // clear flags
     WHEN("A flag is set")
     {
@@ -99,7 +99,7 @@ SCENARIO("The CPU is initialized", "[z80_cpu]")
 
     GIVEN("Flags need to be cleared")
     {
-      cpu.setFlags(ZERO_FLAG | CARRY_FLAG | NEGATIVE_FLAG | HALFCARRY_FLAG);
+      cpu.setFlags(ZERO_FLAG | CARRY_FLAG | SUBTRACT_FLAG | HALFCARRY_FLAG);
       WHEN("Only one flag is being cleared")
       {
         THEN("The other flags remain unaltered")
@@ -107,7 +107,7 @@ SCENARIO("The CPU is initialized", "[z80_cpu]")
           cpu.clearFlags(ZERO_FLAG);
           REQUIRE( cpu.flagIsset(ZERO_FLAG) == false );
           REQUIRE( cpu.flagIsset(CARRY_FLAG) == true );
-          REQUIRE( cpu.flagIsset(NEGATIVE_FLAG) == true );
+          REQUIRE( cpu.flagIsset(SUBTRACT_FLAG) == true );
           REQUIRE( cpu.flagIsset(HALFCARRY_FLAG) == true );
         }
       }
@@ -116,10 +116,10 @@ SCENARIO("The CPU is initialized", "[z80_cpu]")
       {
         THEN("All specified flags are cleared")
         {
-          cpu.clearFlags(CARRY_FLAG | NEGATIVE_FLAG | HALFCARRY_FLAG);
+          cpu.clearFlags(CARRY_FLAG | SUBTRACT_FLAG | HALFCARRY_FLAG);
           REQUIRE( cpu.flagIsset(ZERO_FLAG) == true );
           REQUIRE( cpu.flagIsset(CARRY_FLAG) == false );
-          REQUIRE( cpu.flagIsset(NEGATIVE_FLAG) == false );
+          REQUIRE( cpu.flagIsset(SUBTRACT_FLAG) == false );
           REQUIRE( cpu.flagIsset(HALFCARRY_FLAG) == false );
         }
       }
@@ -189,7 +189,7 @@ SCENARIO("The CPU is initialized", "[z80_cpu]")
       {
         REQUIRE( cpu.flagIsset(ZERO_FLAG) );
         REQUIRE( cpu.flagIsset(CARRY_FLAG) == false );
-        REQUIRE( cpu.flagIsset(NEGATIVE_FLAG) == false );
+        REQUIRE( cpu.flagIsset(SUBTRACT_FLAG) == false );
         REQUIRE( cpu.flagIsset(HALFCARRY_FLAG) == false );
       }
 
@@ -245,6 +245,73 @@ SCENARIO("The CPU is initialized", "[z80_cpu]")
       }
     }
 
+    WHEN("it's ld_hld_a")
+    {
+      mmu.setByte(CARTRIDGE_GAME_START_ADDRESS,     0x32);
+      cpu.getRegister(REG_AF)->setValue(0x9000);
+      cpu.getRegister(REG_HL)->setValue(0x00FF); // the address to write to
+      cpu.cycle();
+
+      THEN("It writes the value in reg A to the address in HL")
+      {
+        REQUIRE(mmu.readByte(0x00FF) == 0x90);
+      }
+
+      THEN("It decrements register HL")
+      {
+        REQUIRE(cpu.getRegister(REG_HL)->getValue() == 0x00FE);
+      }
+    }
+
+    WHEN("it's dec_n")
+    {
+      THEN("It sets the subtract flag")
+      {
+        mmu.setByte(CARTRIDGE_GAME_START_ADDRESS, 0x05);
+        cpu.getRegister(REG_BC)->clear();
+        cpu.getRegister(REG_BC)->setValue(0x0200);
+        cpu.cycle();
+        REQUIRE( cpu.flagIsset(SUBTRACT_FLAG) == true);
+      }
+
+      WHEN("The register will be zeroed out")
+      {
+        mmu.setByte(CARTRIDGE_GAME_START_ADDRESS, 0x05);
+        cpu.getRegister(REG_BC)->clear();
+        cpu.getRegister(REG_BC)->setValue(0x0100);
+        cpu.cycle();
+
+        THEN("it sets the zero flag")
+        {
+          REQUIRE( cpu.flagIsset(ZERO_FLAG) == true );
+        }
+      }
+
+      WHEN("Bit 4 does not have to be borrowed from")
+      {
+        mmu.setByte(CARTRIDGE_GAME_START_ADDRESS, 0x05);
+        cpu.getRegister(REG_BC)->setValue(0x1000);
+        cpu.cycle();
+
+        THEN("It sets the half-carry flag")
+        {
+          REQUIRE( cpu.flagIsset(HALFCARRY_FLAG) == true );
+        }
+      }
+
+      WHEN("B")
+      {
+        mmu.setByte(CARTRIDGE_GAME_START_ADDRESS, 0x05);
+        cpu.getRegister(REG_BC)->setValue(0x0200);
+        cpu.cycle();
+
+        THEN("it subtracts 1 from the register")
+        {
+          REQUIRE(cpu.getRegister(REG_BC)->getUpper() == 0x01);
+        }
+      }
+
+    }
   }
 
 }

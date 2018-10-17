@@ -45,3 +45,11 @@ Z80::Register::getValue()
 void Z80::Register::clear() {
   this->value = 0x0000;
 }
+
+void Z80::Register::decrement() {
+  this->value--;
+}
+
+void Z80::Register::increment() {
+  this->value++;
+}
