@@ -145,9 +145,9 @@ SCENARIO("The CPU is initialized", "[z80_cpu]")
     {
       mmu.setByte( CARTRIDGE_GAME_START_ADDRESS, 0x00 );
       cpu.cycle();
-      THEN("It takes 4 machine cycles")
+      THEN("It takes 1 machine cycle")
       {
-        REQUIRE( cpu.getClock()->getMachineCycles() == 4 );
+        REQUIRE( cpu.getClock()->getMachineCycles() == 1 );
       }
       THEN("It increments the PC by one")
       {
@@ -162,9 +162,9 @@ SCENARIO("The CPU is initialized", "[z80_cpu]")
       mmu.setByte(CARTRIDGE_GAME_START_ADDRESS + 2, 0x01);
       cpu.cycle();
 
-      THEN("It takes 16 machine cycles")
+      THEN("It takes 4 machine cycles")
       {
-        REQUIRE( cpu.getClock()->getMachineCycles() == 16 );
+        REQUIRE( cpu.getClock()->getMachineCycles() == 4 );
       }
       THEN("It updates the PC to the specified address")
       {
@@ -193,6 +193,37 @@ SCENARIO("The CPU is initialized", "[z80_cpu]")
         REQUIRE( cpu.flagIsset(HALFCARRY_FLAG) == false );
       }
 
+    }
+
+    WHEN("It's ld_n_nn")
+    {
+      GIVEN("the register is HL")
+      {
+        mmu.setByte(CARTRIDGE_GAME_START_ADDRESS,     0x21);
+        mmu.setByte(CARTRIDGE_GAME_START_ADDRESS + 1, 0xFF);
+        mmu.setByte(CARTRIDGE_GAME_START_ADDRESS + 2, 0xDF);
+
+        THEN("It loads 2 bytes into HL")
+        {
+          cpu.cycle();
+          REQUIRE( cpu.getRegister(REG_HL)->getValue() == 0xDFFF);
+        }
+      }
+    }
+
+    WHEN("It's ld_nn_n")
+    {
+      GIVEN("the register is BC")
+      {
+        mmu.setByte(CARTRIDGE_GAME_START_ADDRESS,     0x0E);
+        mmu.setByte(CARTRIDGE_GAME_START_ADDRESS + 1, 0xFF);
+
+        THEN("It loads 1 byte into BC")
+        {
+          cpu.cycle();
+          REQUIRE( cpu.getRegister(REG_BC)->getValue() == 0x00FF);
+        }
+      }
     }
 
   }
