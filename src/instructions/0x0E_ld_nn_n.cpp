@@ -15,6 +15,11 @@ Z80::CPU::ld_nn_n()
         this->mmu->readByte( REGISTER(REG_PC).getValue() )
       );
       break;
+    case 0x06:
+      REGISTER(REG_BC).setUpper(
+        this->mmu->readByte( REGISTER(REG_PC).getValue() )
+      );
+      break;
     default:
       throw std::string("Invalid register for ld_nn_n: ").append(std::to_string(n_reg)).c_str();
   }

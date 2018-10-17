@@ -205,6 +205,8 @@ SCENARIO("The CPU is initialized", "[z80_cpu]")
 
         THEN("It loads 2 bytes into HL")
         {
+          cpu.getRegister(REG_HL)->clear();
+
           cpu.cycle();
           REQUIRE( cpu.getRegister(REG_HL)->getValue() == 0xDFFF);
         }
@@ -213,15 +215,32 @@ SCENARIO("The CPU is initialized", "[z80_cpu]")
 
     WHEN("It's ld_nn_n")
     {
-      GIVEN("the register is BC")
+      WHEN("the register is C")
       {
         mmu.setByte(CARTRIDGE_GAME_START_ADDRESS,     0x0E);
         mmu.setByte(CARTRIDGE_GAME_START_ADDRESS + 1, 0xFF);
 
-        THEN("It loads 1 byte into BC")
+        THEN("It loads 1 byte into C")
         {
+          cpu.getRegister(REG_BC)->clear();
+
           cpu.cycle();
           REQUIRE( cpu.getRegister(REG_BC)->getValue() == 0x00FF);
+        }
+      }
+
+      WHEN("the register is B")
+      {
+        mmu.setByte(CARTRIDGE_GAME_START_ADDRESS,     0x06);
+        mmu.setByte(CARTRIDGE_GAME_START_ADDRESS + 1, 0xAB);
+
+        THEN("It loads 1 byte into B")
+        {
+          cpu.getRegister(REG_BC)->clear();
+
+          cpu.cycle();
+
+          REQUIRE( cpu.getRegister(REG_BC)->getValue() == 0xAB00);
         }
       }
     }

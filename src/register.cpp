@@ -41,3 +41,7 @@ Z80::Register::getValue()
 {
   return this->value;
 }
+
+void Z80::Register::clear() {
+  this->value = 0x0000;
+}

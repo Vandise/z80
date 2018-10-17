@@ -41,6 +41,7 @@ namespace Z80
       uint8_t  getLower();
       uint8_t  getUpper();
       uint16_t getValue();
+      void clear();
   };
 }
 
