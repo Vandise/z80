@@ -4,5 +4,5 @@ void
 Z80::CPU::nop()
 {
   this->incrementPC(1);
-  this->clock.incrementMachineCycles(4);
+  this->clock.incrementMachineCycles(1);
 }

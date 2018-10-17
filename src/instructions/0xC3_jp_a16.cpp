@@ -7,5 +7,5 @@ Z80::CPU::jp_a16()
   REGISTER(REG_PC).setValue(
     this->mmu->readWord( REGISTER(REG_PC).getValue() )
   );
-  this->clock.incrementMachineCycles(16);
+  this->clock.incrementMachineCycles(4);
 }

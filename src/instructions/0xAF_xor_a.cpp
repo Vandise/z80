@@ -11,5 +11,5 @@ Z80::CPU::xor_a()
   this->clearFlags( CARRY_FLAG | NEGATIVE_FLAG | HALFCARRY_FLAG );
 
   this->incrementPC(1);
-  this->clock.incrementMachineCycles(4);
+  this->clock.incrementMachineCycles(1);
 }
