@@ -311,6 +311,17 @@ SCENARIO("The CPU is initialized", "[z80_cpu]")
         }
       }
 
+      WHEN("C")
+      {
+        mmu.setByte(CARTRIDGE_GAME_START_ADDRESS, 0x0D);
+        cpu.getRegister(REG_BC)->setValue(0x0002);
+        cpu.cycle();
+
+        THEN("it subtracts 1 from the register")
+        {
+          REQUIRE(cpu.getRegister(REG_BC)->getLower() == 0x01);
+        }
+      }
     }
 
     WHEN("It's jr_cc_n")

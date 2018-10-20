@@ -21,6 +21,9 @@ Z80::CPU::dec_n()
       reg = REG_BC;
       upperFlag = true;
       break;
+    case 0x0D: // reg C
+      reg = REG_BC;
+      break;
     default:
       throw std::string("Invalid register for dec_n: ").append(std::to_string(n_reg)).c_str();
   }
