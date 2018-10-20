@@ -312,6 +312,48 @@ SCENARIO("The CPU is initialized", "[z80_cpu]")
       }
 
     }
-  }
 
+    WHEN("It's jr_cc_n")
+    {
+      WHEN("JR NZ, *")
+      {
+        mmu.setByte(CARTRIDGE_GAME_START_ADDRESS,     0x00); // no-op
+        mmu.setByte(CARTRIDGE_GAME_START_ADDRESS + 1, 0x20); // JR NZ
+
+        WHEN("the ZERO flag is set")
+        {
+          cpu.setFlags(ZERO_FLAG);
+          mmu.setByte(CARTRIDGE_GAME_START_ADDRESS + 2, 0xFE);
+          mmu.setByte(CARTRIDGE_GAME_START_ADDRESS + 3, 0xDD); // garbage byte
+
+          THEN("It moves to the next instruction")
+          {
+            cpu.cycle(); cpu.cycle(); // no-op, jr nz
+            REQUIRE(cpu.getRegister(REG_PC)->getValue() == CARTRIDGE_GAME_START_ADDRESS + 3);
+          }
+        }
+
+        WHEN("the ZERO flag is not set")
+        {
+          cpu.clearFlags(ZERO_FLAG);
+
+          WHEN("Jumping backwards")
+          {
+            mmu.setByte(CARTRIDGE_GAME_START_ADDRESS + 2, 0xFE); // jump back 2 bytes
+
+            THEN("It points to a previous address")
+            {
+              cpu.cycle();
+              REQUIRE(cpu.getRegister(REG_PC)->getValue() == CARTRIDGE_GAME_START_ADDRESS + 1);
+
+              cpu.cycle();
+              REQUIRE(cpu.getRegister(REG_PC)->getValue() == CARTRIDGE_GAME_START_ADDRESS);
+            }
+          }
+        }
+
+      } // jr_nz
+    } // jr cc n
+
+  } // instruction needs exe
 }
